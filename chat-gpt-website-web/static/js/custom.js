@@ -1,11 +1,3 @@
-
-
-
-
-
-
-
-
 // 功能
 $(document).ready(function() {
   var chatBtn = $('#chatBtn');
