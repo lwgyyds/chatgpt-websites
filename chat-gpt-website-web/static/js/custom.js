@@ -1,3 +1,45 @@
+$.ajax({
+      url: 'https://open.aiproxy.xyz/v1/chat/completions',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + data.apiKey
+      },
+      data: JSON.stringify({
+        "messages": data.prompt,
+        "model": "gpt-3.5-turbo",
+        "max_tokens": 2048,
+        "temperature": 0.5,
+        "top_p": 1,
+        "n": 1
+      }),
+      success: function(res) {
+        const resp = res["choices"][0]["message"];
+       
+        addMessage(resp.content,"chatgpt.png");
+        // 收到回复，让按钮可点击
+        chatBtn.attr('disabled',false)
+        // 重新绑定键盘事件
+        chatInput.on("keydown",handleEnter);
+        // 将回复添加到数组
+        messages.push(resp)
+      },
+      error: function(jqXHR, textStatus, errorThrown) {
+        addFailMessage('<span style="color:red;">' + '出错啦！请稍后再试!' + '</span>');
+        chatBtn.attr('disabled',false)
+        chatInput.on("keydown",handleEnter);
+        messages.pop() // 失败就让用户输入信息从数组删除
+      }
+    });
+  });
+
+
+
+
+
+
+
+
 // 功能
 $(document).ready(function() {
   var chatBtn = $('#chatBtn');
